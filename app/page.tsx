@@ -366,7 +366,11 @@ export default function Dashboard() {
     setLoading(true)
     setError(null)
     try {
-      const res = await fetch('/api/agents')
+      // Use external API URL if configured, otherwise fall back to local
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL 
+        ? `${process.env.NEXT_PUBLIC_API_URL}/api/agents`
+        : '/api/agents'
+      const res = await fetch(apiUrl)
       const json = await res.json()
       if (!json.ok) {
         throw new Error(json.error || 'Failed to fetch agents')
